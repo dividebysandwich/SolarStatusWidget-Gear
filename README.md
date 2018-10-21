@@ -1,0 +1,1 @@
+# SolarStatusWidget-Gear
