@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://yourdomain/SolarWidget" version="1.0.0" viewmodes="maximized">
+    <tizen:app-widget id="OllweY3YVS.SolarWidget.SolarWidget" primary="true">
+        <tizen:widget-label>Solar Status Widget</tizen:widget-label>
+        <tizen:widget-content src="widget/SolarWidget/index.html">
+            <tizen:widget-size preview="widget/SolarWidget/preview.png">2x2</tizen:widget-size>
+        </tizen:widget-content>
+    </tizen:app-widget>
+    <tizen:application id="OllweY3YVS.SolarWidget" package="OllweY3YVS" required_version="4.0"/>
+    <content src="index.html"/>
+    <feature name="http://tizen.org/feature/screen.size.normal"/>
+    <name>SolarWidget</name>
+    <tizen:profile name="wearable"/>
+</widget>
