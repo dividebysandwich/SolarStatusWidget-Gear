@@ -45,6 +45,19 @@
 	}
 
 	/**
+	 * Handles the hardware key events.
+	 * @private
+	 * @param {Object} event - The object contains data of key event
+	 */
+	function keyEventHandler(event) {
+		if (event.keyName === "back") {
+			try {
+				tizen.application.getCurrentApplication().exit();
+			} catch (ignore) {}
+		}
+	}
+
+	/**
 	 * Adds a text node with specific class to an element.
 	 * @private
 	 * @param {Object} objElm - The target element to be added the text
@@ -177,6 +190,10 @@
 
 	function advanceAnimation()
 	{
+		if (arrayData.length < 4) {
+			window.requestAnimationFrame(advanceAnimation);
+			return;
+		}
 		//Battery usage animation
 		var numBattArrows = 0;
 		var battDirection = 0;
@@ -297,6 +314,8 @@
 		if (animationOffset > maxAnimationOffset) {
 			animationOffset = 0;
 		}
+		window.requestAnimationFrame(advanceAnimation);
+
 	}
 
 
@@ -327,7 +346,7 @@
 		c.setAttribute('width', '360');
 		c.setAttribute('height', '360');
 		myCanvasContext = c.getContext("2d");
-		myCanvasContext.clearRect(0,0,360,360);
+		myCanvasContext.clearRect(0,0,359,359);
 
 	}
 
@@ -345,7 +364,6 @@
 		txtDoc,
 		i;
 
-		arrayData = [];
 		lengthNews = 0;
 		emptyElement(objNews);
 		console.log("Getting Data...");
@@ -354,8 +372,11 @@
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
 				console.log("Fetch result: "+xmlhttp.responseText);
-				arrayData = xmlhttp.responseText.split('\n');
-				showNews();
+				var result = xmlhttp.responseText.split('\n');
+				if (result.length >4) {
+					arrayData = result;
+					showNews();
+				}
 				xmlhttp = null;
 			} else {
 				addTextElement(objNews, "subject", MSG_ERR_NOTCONNECTED);
@@ -366,17 +387,43 @@
 	}
 
 
+	var dataFetchTimer = false;
+	var animationTimer = false;
+	
 	/**
 	 * Initiates the application.
 	 * @private
 	 */
 	function init() {
-		setDefaultEvents();
-
 		getDataFromXML();
-		setInterval(getDataFromXML, 20000);
-		setInterval(advanceAnimation, 10);
+		dataFetchTimer = setInterval(getDataFromXML, 20000);
+//		animationTimer = setInterval(advanceAnimation, 20);
+		document.addEventListener(visibilityChange, handleVisibilityChange);
+		window.requestAnimationFrame(advanceAnimation);
 	}
 
+	function handleVisibilityChange(){
+		if (document.visibilityState === 'hidden') {
+			console.log("Page is now hidden.");
+			if (dataFetchTimer !== false) {
+				clearInterval(dataFetchTimer);
+				dataFetchTimer = false;
+			}
+			if (animationTimer !== false) {
+				clearInterval(animationTimer);
+				animationTimer = false;
+			}
+		} else {
+			console.log("Page is now visible.");
+			getDataFromXML();
+			if (dataFetchTimer === false)
+				dataFetchTimer = setInterval(getDataFromXML, 20000);
+//			if (animationTimer === false)
+//			    animationTimer = setInterval(advanceAnimation, 20);
+			window.requestAnimationFrame(advanceAnimation);
+		}
+	}
+	
 	window.onload = init;
+	
 }());
