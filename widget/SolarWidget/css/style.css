@@ -108,13 +108,52 @@ body {
     background-color: blue;
 }
 
-#myCanvas {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 360;
-	height: 360;
-	z-index: 2;
+#linkbatt {
+    position: absolute;
+    text-align: left;
+    left: 70px;
+    top: 177px;
+    color: white;
+    height: 4px;
+    width: 85px;
+    z-index: 0;
+    background-color: white;
+}
+
+#linkgrid {
+    position: absolute;
+    text-align: left;
+    left: 214px;
+    top: 177px;
+    color: white;
+    height: 4px;
+    width: 86px;
+    z-index: 0;
+    background-color: white;
+}
+
+#linkpv {
+    position: absolute;
+    text-align: left;
+    left: 181px;
+    top: 55px;
+    color: white;
+    height: 93px;
+    width: 4px;
+    z-index: 0;
+    background-color: white;
+}
+
+#linkuse {
+    position: absolute;
+    text-align: left;
+    left: 181px;
+    top: 210px;
+    color: white;
+    height: 90px;
+    width: 4px;
+    z-index: 0;
+    background-color: white;
 }
 
 .header-title {
